@@ -1,5 +1,5 @@
 body {
-  background: salmon;
+  background: #fafafa;
 }
 
 ul.board {
@@ -10,9 +10,13 @@ ul.board {
   padding: 0;
 }
 
+.newli {
+  background: blue;
+}
+
 ul.board li {
-  width: 100px;
-  height: 100px;
+  width: 125px;
+  height: 140px;
   box-sizing: border-box;
   float: left;
   border: 1px solid grey;
@@ -21,5 +25,13 @@ ul.board li {
 }
 
 .falling {
-  background: black;
+  background: red;
+}
+h1 {
+  font-family: 'Press Start 2P', cursive;
+}
+p {
+  font-size: 20px;
+  color: red;
+  font-family: 'Press Start 2P', cursive;
 }

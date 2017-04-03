@@ -22,41 +22,65 @@
 
 $(init);
 
-const width  = 5;
-const height = 7;
+const width        = 4;
+const height       = 5;
+const falling      = [];
+let intTime        = 1500;
+let numberOfBlocks = 0;
+let score          = 0;
 let $body;
 let $board;
-let numberOfBlocks = 0;
-const falling = [];
-let intTime = 1000;
-let score = 0;
-
+let li = $('li');
 
 function init() {
   createBoard();
-
-  // GENERATE BLOCK
-  setInterval(generateBlock, intTime);
-
-  $(document).on('click', '.falling', function() {
-    const fallingIndex = parseInt($(this).attr('class'));
-    if (falling[0] === fallingIndex) {
-      $(this).attr('class', '');
-      falling.shift();
-      score ++;
-      $('p').text(`Score: ${score}`);
-      // intTime = intTime- 10;
-      // console.log(intTime);
-    }
-  });
+  $('button').on('click', startGame);
 }
-// setInterval(function () {
-//   // console.log(score);
-//   console.log(intTime);
-//
-// }, 500);
+
+function createBoard() {
+  $body  = $('body');
+  $board = $('<ul class="board"></ul>');
+  $body.append($board);
+  for (let i = 0; i < width*height; i++) {
+    $board.append('<li></li>');
+  }
+}
+
+function startGame() {
+  setInterval(function() {
+    for (let i = 0; i < width; i++) {
+      console.log('working');
+      $board.prepend('<li class="newli"></li>');
+    }
+
+    const first4 = $('li:lt(4)');
+    var item = first4[Math.floor(Math.random()*first4.length)];
+    $(item).addClass('falling');
+
+    $('li:nth-last-child(-n+4)').remove();
+  }, 300);
+
+  // setInterval(function() {
+  //   console.log('speedUp');
+  //   intTime = intTime - 100;
+  // }, 3000);
+
+  // setInterval(generateBlock, intTime);
+  // $('.board').on('click', '.falling', removeBlock);
+}
+
+function removeBlock() {
+  const fallingIndex = parseInt($(this).attr('class'));
+  if (falling[0] === fallingIndex) {
+    $(this).attr('class', '');
+    falling.shift();
+    score ++;
+    $('p').text(`Score: ${score}`);
+  }
+}
 
 function generateBlock() {
+  console.log(intTime);
   let prevIndex;
   let nextIndex;
   let $prev;
@@ -77,16 +101,7 @@ function generateBlock() {
     const classList = $prev.attr('class');
     $prev.attr('class', '');
     $next.attr('class', classList);
-  }, intTime-10);
-}
-
-function createBoard() {
-  $body  = $('body');
-  $board = $('<ul class="board"></ul>');
-  $body.append($board);
-  for (let i = 0; i < width*height; i++) {
-    $board.append('<li></li>');
-  }
+  }, intTime - 2);
 }
 
 function pickStartIndex() {
