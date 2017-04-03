@@ -4,19 +4,15 @@ body {
 
 ul.board {
   width: 500px;
-  height: 700px;
+  height: 625px;
   background: white;
   margin: 0 auto;
   padding: 0;
 }
 
-.newli {
-  background: blue;
-}
-
 ul.board li {
   width: 125px;
-  height: 140px;
+  height: 125px;
   box-sizing: border-box;
   float: left;
   border: 1px solid grey;
