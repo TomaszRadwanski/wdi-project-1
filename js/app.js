@@ -22,26 +22,39 @@
 
 $(init);
 
-const width  = 10;
+const width  = 5;
+const height = 7;
 let $body;
 let $board;
 let numberOfBlocks = 0;
 const falling = [];
+let intTime = 1000;
+let score = 0;
+
 
 function init() {
   createBoard();
 
   // GENERATE BLOCK
-  setInterval(generateBlock, 1500);
+  setInterval(generateBlock, intTime);
 
   $(document).on('click', '.falling', function() {
     const fallingIndex = parseInt($(this).attr('class'));
     if (falling[0] === fallingIndex) {
       $(this).attr('class', '');
       falling.shift();
+      score ++;
+      $('p').text(`Score: ${score}`);
+      // intTime = intTime- 10;
+      // console.log(intTime);
     }
   });
 }
+// setInterval(function () {
+//   // console.log(score);
+//   console.log(intTime);
+//
+// }, 500);
 
 function generateBlock() {
   let prevIndex;
@@ -64,14 +77,14 @@ function generateBlock() {
     const classList = $prev.attr('class');
     $prev.attr('class', '');
     $next.attr('class', classList);
-  }, 1000);
+  }, intTime-10);
 }
 
 function createBoard() {
   $body  = $('body');
   $board = $('<ul class="board"></ul>');
   $body.append($board);
-  for (let i = 0; i < width*width; i++) {
+  for (let i = 0; i < width*height; i++) {
     $board.append('<li></li>');
   }
 }
