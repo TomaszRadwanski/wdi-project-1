@@ -8,9 +8,9 @@
 // if any of the divs fall below the bottom line then you have lost the game
 // select div using the class and nth child
 
-// first have comp randomise
-// make it randomise at an interval
-// next have the divs show up
+// first have comp randomise          - DONE
+// make it randomise at an interval   - DONE
+// next have the divs show up         - DONE
 // then have the divs drop down at an interval
 // then make it so you can click the div and it disapears/speeds up every correct click
 // then make it so that you have to click the divs in the correct order/gg if wrong order
@@ -27,9 +27,10 @@ $(function(){
   function running() {
     let compSelectTime = 1000;
     setInterval(function () {
-      const compSelect = Math.floor(Math.random()*4 +2);
-      const compRandom = $(`.row1:nth-child(${compSelect})`);
+      let compSelect = Math.floor(Math.random()*4 +2);
+      let compRandom = $(`.row1:nth-child(${compSelect})`);
       console.log(compRandom);
+      compRandom.css('background-color', 'black');
     }, compSelectTime);
   }
   running();
