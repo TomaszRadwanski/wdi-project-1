@@ -20,21 +20,121 @@
 // then make it display your score
 // then make it work on the phone
 
-$(function(){
+$(init);
 
+const width  = 10;
+let $body;
+let $board;
+let numberOfBlocks = 0;
+const falling = [];
 
+function init() {
+  createBoard();
 
-  function running() {
-    let compSelectTime = 1000;
-    setInterval(function () {
-      let compSelect = Math.floor(Math.random()*4 +2);
-      let compRandom = $(`.row1:nth-child(${compSelect})`);
-      console.log(compRandom);
-      compRandom.css('background-color', 'black');
-    }, compSelectTime);
+  // GENERATE BLOCK
+  setInterval(generateBlock, 1500);
+
+  $(document).on('click', '.falling', function() {
+    const fallingIndex = parseInt($(this).attr('class'));
+    if (falling[0] === fallingIndex) {
+      $(this).attr('class', '');
+      falling.shift();
+    }
+  });
+}
+
+function generateBlock() {
+  let prevIndex;
+  let nextIndex;
+  let $prev;
+  let $next;
+  nextIndex = pickStartIndex();
+  $next     = pickSquare(nextIndex);
+  $next.addClass(numberOfBlocks.toString());
+  $next.addClass('falling');
+  falling.push(numberOfBlocks);
+  numberOfBlocks++;
+
+  // Repeating
+  setInterval(() => {
+    prevIndex = nextIndex;
+    nextIndex = nextIndex + width;
+    $prev     = pickSquare(prevIndex);
+    $next     = pickSquare(nextIndex);
+    const classList = $prev.attr('class');
+    $prev.attr('class', '');
+    $next.attr('class', classList);
+  }, 1000);
+}
+
+function createBoard() {
+  $body  = $('body');
+  $board = $('<ul class="board"></ul>');
+  $body.append($board);
+  for (let i = 0; i < width*width; i++) {
+    $board.append('<li></li>');
   }
-  running();
+}
+
+function pickStartIndex() {
+  return Math.floor(Math.random() * width);
+}
+
+function pickSquare(nextIndex) {
+  return $($('li')[nextIndex]);
+}
 
 
 
-});
+
+
+
+
+
+
+
+
+
+// $(function(){
+//
+//   const gameSequence = [];
+//   const userSequence = [];
+//   let gameSpeed = 1000;
+//
+//   function running() {
+//     // setInterval(function() {
+//
+//       const compSelect = Math.floor(Math.random()*4 + 2);
+//       const compRandom = $(`.row1:nth-child(${compSelect})`);
+//       compRandom.addClass('selected');
+//       $('.selected').css('background-color', 'black');
+//       gameSequence.push(compRandom);
+//       // console.log(gameSequence);
+//     // }, gameSpeed);
+//           shiftElements();
+//   }
+//   running();
+//
+//   function shiftElements() {
+//     console.log('running');
+//
+//     $.each(gameSequence, function(index, cell) {
+//       const cellClass = $(cell).attr('class').split(' ')[0];
+//       const nextCell = $(cell).next().find(`.${cellClass}`);
+//       console.log(nextCell);
+//       $(nextCell).css('background', 'red');
+//     });
+//   }
+//
+//
+//   // function dropDiv() {
+//   //   const divDropTime = 990;
+//   //   // setInterval(function () {
+//   //   const selectedColumn = $('.selected').attr('class').split(' ')[0];
+//   //   console.log($('.selected').next().find(`.${selectedColumn}`).css('background', 'red'));
+//   //   // }, divDropTime);
+//   // }
+//   // dropDiv();
+//
+//
+// });
