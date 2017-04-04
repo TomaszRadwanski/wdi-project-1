@@ -24,7 +24,7 @@ function startGame(){
 }
 
 function createFallingDiv (){
-  gameTimeout = setTimeout(createFallingDiv, interval/4.7);
+  gameTimeout = setTimeout(createFallingDiv, interval/4.4);
 
   const compSelection = $('.col')[Math.floor(Math.random()*$('.col').length)];
   const $newDiv = $('<div>', { class: 'falling'});
@@ -48,7 +48,7 @@ function removeFalling(e) {
   if (falling.indexOf(e.target) === 0) {
     interval = interval - 40;
     falling.shift();
-    $(this).stop(true).fadeOut( 'slow', () => $(this).remove());
+    $(this).stop(true).fadeOut( 'fast', () => $(this).remove());
     score ++;
     $('#score').text(`Score: ${score}`);
   }

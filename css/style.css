@@ -8,7 +8,7 @@ html, body {
 }
 
 body {
-  background: #fafafa;
+  background: #b3ccff;
   text-align: center;
   display: flex;
   min-height: 100vh;
@@ -26,12 +26,17 @@ header p {
 }
 
 header button {
-  width: 320px;
-  background: white;
+  width: 130px;
+  background: #6699ff;
   height: 40px;
   line-height: 40px;
   margin-bottom: 20px;
   border: 0;
+  border-radius: 100px;
+  font-family: 'Press Start 2P', cursive;
+}
+button:hover {
+  background-color: green;
 }
 
 main {
@@ -49,18 +54,19 @@ main {
 }
 
 .board .col {
-  background: lightBlue;
+  background: #b3ffb3;
   float: left;
   width: 25%;
   min-height: 100%;
 }
 
 .falling {
-  height: 70px;
+  height: 90px;
   width: 80px;
-  background-color: green;
   position: absolute;
-  border: 2px solid blue;
+  background-image: url('../images/beer.png');
+  background-size: cover;
+
 }
 
 /*footer {
