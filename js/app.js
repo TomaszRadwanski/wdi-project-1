@@ -3,15 +3,25 @@ let $main;
 let $board;
 let interval = 3000;
 let falling = [];
+let score = 0;
+let gameInterval;
+let running = true;
+
 
 function init (){
   createBoard();
-  $('button').on('click', startGame);
+  $('#start').on('click', startGame);
   $('.board').on('click', '.falling', removeFalling);
+  $('#reset').on('click', resetGame);
+
 }
 
 function startGame(){
-  setInterval(createFallingDiv, interval/4.7);
+  console.log(running);
+  if (running === true)  {
+    gameInterval = setInterval(createFallingDiv, interval/4.7);
+    running = false;
+  }
 }
 
 function createFallingDiv (){
@@ -24,23 +34,23 @@ function createFallingDiv (){
     duration: interval,
     easing: 'linear',
     complete: function() {
-      $('p').text('hit');
-      $(this).remove();
+      $('.falling').stop(true).remove();
+      clearInterval(gameInterval);
+      $('#start').hide();
+      $('#reset').show();
     }
   });
-
-  // Push DOM object into the array
   falling.push($newDiv[0]);
 }
 
 function removeFalling(e) {
-  // Can't make comparison as a jQuery object?
   if (falling.indexOf(e.target) === 0) {
     falling.shift();
-    $(this).stop(true).remove();
-    // $(this).fadeOut('slow', function() {
-    //   $(this).remove();
-    // });
+    $(this).stop(true).fadeOut( 'slow', function() {
+      $(this).remove();
+    });
+    score ++;
+    $('#score').text(`Score: ${score}`);
   }
 }
 
@@ -51,4 +61,13 @@ function createBoard() {
   for (let i = 0; i < 4; i++) {
     $board.append('<div class="col"></div>');
   }
+}
+function resetGame() {
+  falling = [];
+  score = 0;
+  clearInterval(gameInterval);
+  $('#reset').hide();
+  $('#start').show();
+  $('#score').text(`Score: ${score}`);
+  running = true;
 }
