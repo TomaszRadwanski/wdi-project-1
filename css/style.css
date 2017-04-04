@@ -56,7 +56,7 @@ main {
 }
 
 .falling {
-  height: 50px;
+  height: 70px;
   width: 80px;
   background-color: green;
   position: absolute;

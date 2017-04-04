@@ -46,7 +46,7 @@ function createFallingDiv (){
 
 function removeFalling(e) {
   if (falling.indexOf(e.target) === 0) {
-    interval = interval - 100;
+    interval = interval - 40;
     falling.shift();
     $(this).stop(true).fadeOut( 'slow', () => $(this).remove());
     score ++;
