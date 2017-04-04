@@ -4,9 +4,8 @@ let $board;
 let interval = 3000;
 let falling = [];
 let score = 0;
-let gameInterval;
+let gameTimeout;
 let running = true;
-
 
 function init (){
   createBoard();
@@ -19,12 +18,14 @@ function init (){
 function startGame(){
   console.log(running);
   if (running === true)  {
-    gameInterval = setInterval(createFallingDiv, interval/4.7);
+    gameTimeout = setTimeout(createFallingDiv, interval/4.7);
     running = false;
   }
 }
 
 function createFallingDiv (){
+  gameTimeout = setTimeout(createFallingDiv, interval/4.7);
+
   const compSelection = $('.col')[Math.floor(Math.random()*$('.col').length)];
   const $newDiv = $('<div>', { class: 'falling'});
   $(compSelection).append($newDiv);
@@ -35,7 +36,7 @@ function createFallingDiv (){
     easing: 'linear',
     complete: function() {
       $('.falling').stop(true).remove();
-      clearInterval(gameInterval);
+      clearTimeout(gameTimeout);
       $('#start').hide();
       $('#reset').show();
     }
@@ -45,10 +46,9 @@ function createFallingDiv (){
 
 function removeFalling(e) {
   if (falling.indexOf(e.target) === 0) {
+    interval = interval - 100;
     falling.shift();
-    $(this).stop(true).fadeOut( 'slow', function() {
-      $(this).remove();
-    });
+    $(this).stop(true).fadeOut( 'slow', () => $(this).remove());
     score ++;
     $('#score').text(`Score: ${score}`);
   }
@@ -65,9 +65,10 @@ function createBoard() {
 function resetGame() {
   falling = [];
   score = 0;
-  clearInterval(gameInterval);
+  clearTimeout(gameTimeout);
   $('#reset').hide();
   $('#start').show();
   $('#score').text(`Score: ${score}`);
   running = true;
+  interval = 3000;
 }
