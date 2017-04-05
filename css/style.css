@@ -8,11 +8,11 @@ html, body {
 }
 
 body {
-  background: #b3ccff;
   text-align: center;
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  background-image: url("https://rocky-wave-47242.herokuapp.com/images/01.jpg");
 }
 
 header h1 {
@@ -35,10 +35,13 @@ header button {
   border-radius: 100px;
   font-family: 'Press Start 2P', cursive;
 }
-button:hover {
-  background-color: green;
+button:hover, #reset:hover {
+  background: #40E356;
+  }
+button:focus, #reset:focus {
+  border: none;
+  outline:none;
 }
-
 main {
   flex: 1;
 }
@@ -78,16 +81,44 @@ main {
   background-image: url('../images/poison.png');
 }
 
-/*footer {
-  min-height: 40px;
-  background: white;
-  margin-top: 20px;
-}*/
-
+#gg {
+  position: absolute;
+  top: 300px;
+  z-index: 100;
+  margin: 0 auto;
+  width: 100%;
+  font-size: 35px;
+  font-family: 'Press Start 2P', cursive;
+  white-space: nowrap;
+  color: red;
+  -webkit-animation: pulsate 1.6s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  opacity: 0.3;
+}
+@-webkit-keyframes pulsate {
+ 0% {
+     opacity: 0.3;
+ }
+ 50% {
+     opacity: 1.0;
+ }
+ 100% {
+     opacity: 0.3;
+ }
+}
 #reset {
   display: none;
   margin: 0 auto;
   margin-bottom: 20px;
+  -webkit-animation: pulsate 1.6s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  opacity: 0.3;
+  height: 40px;
+  width: 140px;
+  font-size: 17px;
+  background-color: red;
+  text-align: center;
+  line-height: 43px;
 }
 @media only screen and (max-width: 770px) {
   h1 {
@@ -100,7 +131,6 @@ main {
     width: 70px;
     height: 20px;
     font-size: 10px;
-    line-height: 20px;
-
+    line-height: 17px;
 }
 }

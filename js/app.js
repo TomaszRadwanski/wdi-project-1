@@ -20,23 +20,23 @@ function init (){
   $('.board').on('click', '.bonus', removeBonus);
   $('.board').on('click', '.slow', removeSlow);
   $('#reset').on('click', resetGame);
-
+  $('#gg').hide();
 }
 
 function startGame(){
-  console.log(running);
   if (running === true)  {
     gameTimeout = setTimeout(createFallingDiv, interval/4.7);
     running = false;
   }
+
 }
 
 function createFallingDiv (){
   gameTimeout = setTimeout(createFallingDiv, interval/4.4);
   const compSelection = $('.col')[Math.floor(Math.random()*$('.col').length)];
   const typeOfDiv = Math.floor(Math.random() * 100);
-  // if (typeOfDiv >= 12) {
-  if (typeOfDiv >= 75) {
+  if (typeOfDiv >= 10) {
+  // if (typeOfDiv >= 75) { //use to see all types
     $newGoodDiv = $('<div>', { class: 'falling'});
     $(compSelection).append($newGoodDiv);
     $newGoodDiv.animate({
@@ -46,8 +46,8 @@ function createFallingDiv (){
         complete: gameOver
       });
     falling.push($newGoodDiv[0]);
-  } else if (typeOfDiv >= 50 && typeOfDiv < 75 ) {
-  // } else if (typeOfDiv > 7 && typeOfDiv < 10 ) {
+  // } else if (typeOfDiv >= 50 && typeOfDiv < 75 ) { //use to see all types
+  } else if (typeOfDiv >= 7 && typeOfDiv < 9 ) {
     $newBonusDiv = $('<div>', { class: 'bonus'});
     $(compSelection).append($newBonusDiv);
     $newBonusDiv.animate({
@@ -56,8 +56,8 @@ function createFallingDiv (){
         easing: 'linear',
         complete: gameOver
       });
-  } else if (typeOfDiv >= 25 && typeOfDiv < 50 ) {
-  // } else if (typeOfDiv >= 10 && typeOfDiv < 12 ) {
+  // } else if (typeOfDiv >= 25 && typeOfDiv < 50 ) { //use to see all types
+  } else if (typeOfDiv >= 9 && typeOfDiv < 10 ) {
     $newSlowDiv = $('<div>', { class: 'slow'});
     $(compSelection).append($newSlowDiv);
     $newSlowDiv.animate({
@@ -117,6 +117,7 @@ function resetGame() {
   clearTimeout(gameTimeout);
   $('#reset').hide();
   $('#start').show();
+  $('#gg').hide();
   $('#score').text(`Score: ${score}`);
   running = true;
   interval = 3000;
@@ -130,5 +131,6 @@ function gameOver() {
   clearTimeout(gameTimeout);
   $('#start').hide();
   $('#reset').show();
+  $('#gg').show();
 
 }
