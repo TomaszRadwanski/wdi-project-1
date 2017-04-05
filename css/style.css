@@ -12,7 +12,8 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-  background-image: url("https://rocky-wave-47242.herokuapp.com/images/01.jpg");
+  background-image: url("../images/beerBack.jpg");
+  background-position: center;
 }
 
 header h1 {
@@ -21,7 +22,7 @@ header h1 {
 
 header p {
   font-size: 20px;
-  color: red;
+  color: #000;
   font-family: 'Press Start 2P', cursive;
 }
 
@@ -52,12 +53,12 @@ main {
   overflow: hidden;
   height: 90%;
   position: relative;
-  border: 2px solid black;
   box-sizing: content-box;
+  border: 2px solid rgba(0, 0, 0, 0.3)
 }
 
 .board .col {
-  background: #b3ffb3;
+  background: rgba(243, 123, 11, 0.3);
   float: left;
   width: 25%;
   min-height: 100%;

@@ -6,11 +6,12 @@ let gameTimeout;
 let $newGoodDiv;
 let $newSlowDiv;
 let $newBonusDiv;
+
 let score     = 0;
+let hScore    = 0;
 let falling   = [];
 let running   = true;
 let interval  = 3000;
-
 
 function init (){
   createBoard();
@@ -87,6 +88,7 @@ function removeFalling(e) {
     $(this).stop(true).fadeOut( 'fast', () => $(this).remove());
     score ++;
     $('#score').text(`Score: ${score}`);
+    highScore();
   }
 }
 function removeBonus() {
@@ -94,12 +96,14 @@ function removeBonus() {
   $(this).stop(true).fadeOut( 'fast', () => $(this).remove());
   score = score + 5;
   $('#score').text(`Score: ${score}`);
+  highScore();
 }
 function removeSlow() {
   interval = interval + 150;
   $(this).stop(true).fadeOut( 'fast', () => $(this).remove());
   score = score + 1;
   $('#score').text(`Score: ${score}`);
+  highScore();
 }
 
 function createBoard() {
@@ -108,6 +112,7 @@ function createBoard() {
   $main.append($board);
   for (let i = 0; i < 4; i++) {
     $board.append('<div class="col"></div>');
+    highScore();
   }
 }
 
@@ -132,5 +137,10 @@ function gameOver() {
   $('#start').hide();
   $('#reset').show();
   $('#gg').show();
-
+}
+function highScore() {
+  if (score > hScore) {
+    hScore = score;
+    $('#hScore').text(`High Score: ${hScore}`);
+  }
 }
