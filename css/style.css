@@ -59,14 +59,23 @@ main {
   width: 25%;
   min-height: 100%;
 }
-
-.falling {
+.falling, .bonus, .slow, .dontClick {
   height: 90px;
   width: 80px;
   position: absolute;
-  background-image: url('../images/beer.png');
   background-size: cover;
-
+}
+.falling {
+  background-image: url('../images/beer.png');
+}
+.bonus {
+  background-image: url('../images/shot.png');
+}
+.slow {
+  background-image: url('../images/water.png');
+}
+.dontClick {
+  background-image: url('../images/poison.png');
 }
 
 /*footer {
@@ -79,4 +88,19 @@ main {
   display: none;
   margin: 0 auto;
   margin-bottom: 20px;
+}
+@media only screen and (max-width: 770px) {
+  h1 {
+    font-size: 20px;
+  }
+  #score {
+    font-size: 10px;
+  }
+  header button {
+    width: 70px;
+    height: 20px;
+    font-size: 10px;
+    line-height: 20px;
+
+}
 }
