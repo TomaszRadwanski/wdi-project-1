@@ -133,5 +133,8 @@ main {
     height: 20px;
     font-size: 10px;
     line-height: 17px;
-}
+  }
+  #hScore {
+  font-size: 10px;
+  }
 }

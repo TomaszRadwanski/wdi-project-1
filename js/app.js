@@ -1,12 +1,18 @@
 $(init);
+// const game = {};
 let $main;
-let $board;
+let beer;
+let fallen;
+let vodka;
+let poison;
+let water;
 let $newBadDiv;
 let gameTimeout;
 let $newGoodDiv;
 let $newSlowDiv;
+let $boardCreate;
 let $newBonusDiv;
-
+let compSelection;
 let score     = 0;
 let hScore    = 0;
 let falling   = [];
@@ -17,58 +23,46 @@ function init (){
   createBoard();
   $('#start').on('click', startGame);
   $('.board').on('click', '.falling', removeFalling);
-  $('.board').on('click', '.dontClick', gameOver);
+  $('.board').on('click', '.dontClick', clickPoison);
   $('.board').on('click', '.bonus', removeBonus);
   $('.board').on('click', '.slow', removeSlow);
   $('#reset').on('click', resetGame);
   $('#gg').hide();
 }
-
+function createBoard() {
+  $main         = $('main');
+  $boardCreate  = $('<div>', { class: 'board'});
+  $main.append($boardCreate);
+  for (let i = 0; i < 4; i++) {
+    $boardCreate.append('<div class="col"></div>');
+    highScore();
+  }
+}
 function startGame(){
   if (running === true)  {
     gameTimeout = setTimeout(createFallingDiv, interval/4.7);
-    running = false;
+    running     = false;
   }
-
 }
-
 function createFallingDiv (){
-  gameTimeout = setTimeout(createFallingDiv, interval/4.4);
-  const compSelection = $('.col')[Math.floor(Math.random()*$('.col').length)];
-  const typeOfDiv = Math.floor(Math.random() * 100);
-  if (typeOfDiv >= 10) {
-  // if (typeOfDiv >= 75) { //use to see all types
-    $newGoodDiv = $('<div>', { class: 'falling'});
-    $(compSelection).append($newGoodDiv);
-    $newGoodDiv.animate({
-      bottom: 0},
-      { duration: interval,
-        easing: 'linear',
-        complete: gameOver
-      });
+  $newGoodDiv       = $('<div>', { class: 'falling'});
+  $newBonusDiv      = $('<div>', { class: 'bonus'});
+  $newSlowDiv       = $('<div>', { class: 'slow'});
+  $newBadDiv        = $('<div>', { class: 'dontClick'});
+  gameTimeout       = setTimeout(createFallingDiv, interval/4.4);
+  compSelection     = $('.col')[Math.floor(Math.random()*$('.col').length)];
+  const typeOfDiv   = Math.floor(Math.random() * 100);
+  // if (typeOfDiv >= 10) {
+  if (typeOfDiv >= 75) {
+    compAnimate($newGoodDiv);
     falling.push($newGoodDiv[0]);
-  // } else if (typeOfDiv >= 50 && typeOfDiv < 75 ) { //use to see all types
-  } else if (typeOfDiv >= 7 && typeOfDiv < 9 ) {
-    $newBonusDiv = $('<div>', { class: 'bonus'});
-    $(compSelection).append($newBonusDiv);
-    $newBonusDiv.animate({
-      bottom: 0},
-      { duration: interval,
-        easing: 'linear',
-        complete: gameOver
-      });
-  // } else if (typeOfDiv >= 25 && typeOfDiv < 50 ) { //use to see all types
-  } else if (typeOfDiv >= 9 && typeOfDiv < 10 ) {
-    $newSlowDiv = $('<div>', { class: 'slow'});
-    $(compSelection).append($newSlowDiv);
-    $newSlowDiv.animate({
-      bottom: 0},
-      { duration: interval,
-        easing: 'linear',
-        complete: gameOver
-      });
+  // } else if (typeOfDiv >= 9 && typeOfDiv < 10 ) {
+  } else if (typeOfDiv >= 50 && typeOfDiv < 75 ) {
+    compAnimate($newBonusDiv);
+  // } else if (typeOfDiv >= 8 && typeOfDiv < 9 ) {
+  } else if (typeOfDiv >= 25 && typeOfDiv < 50 ) {
+    compAnimate($newSlowDiv);
   } else {
-    $newBadDiv = $('<div>', { class: 'dontClick'});
     $(compSelection).append($newBadDiv);
     $newBadDiv.animate({
       bottom: 0},
@@ -80,54 +74,45 @@ function createFallingDiv (){
       });
   }
 }
-
-function removeFalling(e) {
-  if (falling.indexOf(e.target) === 0) {
-    interval = interval - 40;
+function compAnimate(div) {
+  $(compSelection).append(div);
+  div.animate({
+    bottom: 0},
+    { duration: interval,
+      easing: 'linear',
+      complete: gameOver
+    });
+}
+function removeFalling() {
+  if (falling.indexOf(this) === 0) {
     falling.shift();
-    $(this).stop(true).fadeOut( 'fast', () => $(this).remove());
-    score ++;
-    $('#score').text(`Score: ${score}`);
-    highScore();
+    removeDiv.call(this, -40, 1);
   }
+  beer = new Audio('sounds/beer.mp3');
+  beer.play();
 }
 function removeBonus() {
-  interval = interval - 40;
-  $(this).stop(true).fadeOut( 'fast', () => $(this).remove());
-  score = score + 5;
-  $('#score').text(`Score: ${score}`);
-  highScore();
+  removeDiv.call(this, -40, 5);
+  vodka = new Audio('sounds/vodka.mp3');
+  vodka.play();
 }
 function removeSlow() {
-  interval = interval + 150;
+  removeDiv.call(this, 160, 1);
+  water = new Audio('sounds/water.wav');
+  water.play();
+}
+function removeDiv(time, points) {
+  interval  = interval + time;
+  score     = score + points;
   $(this).stop(true).fadeOut( 'fast', () => $(this).remove());
-  score = score + 1;
   $('#score').text(`Score: ${score}`);
   highScore();
 }
-
-function createBoard() {
-  $main  = $('main');
-  $board = $('<div class="board"></div>');
-  $main.append($board);
-  for (let i = 0; i < 4; i++) {
-    $board.append('<div class="col"></div>');
-    highScore();
-  }
+function clickPoison() {
+  gameOver();
+  poison = new Audio('sounds/poison.mp3');
+  poison.play();
 }
-
-function resetGame() {
-  falling = [];
-  score = 0;
-  clearTimeout(gameTimeout);
-  $('#reset').hide();
-  $('#start').show();
-  $('#gg').hide();
-  $('#score').text(`Score: ${score}`);
-  running = true;
-  interval = 3000;
-}
-
 function gameOver() {
   $('.falling').stop(true).remove();
   $('.dontClick').stop(true).remove();
@@ -137,6 +122,19 @@ function gameOver() {
   $('#start').hide();
   $('#reset').show();
   $('#gg').show();
+  fallen = new Audio('sounds/fallen.mp3');
+  fallen.play();
+}
+function resetGame() {
+  falling   = [];
+  score     = 0;
+  running   = true;
+  interval  = 3000;
+  clearTimeout(gameTimeout);
+  $('#reset').hide();
+  $('#start').show();
+  $('#gg').hide();
+  $('#score').text(`Score: ${score}`);
 }
 function highScore() {
   if (score > hScore) {
