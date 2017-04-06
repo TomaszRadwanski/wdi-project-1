@@ -1,144 +1,146 @@
-$(init);
-// const game = {};
-let $main;
-let beer;
-let fallen;
-let vodka;
-let poison;
-let water;
-let $newBadDiv;
-let gameTimeout;
-let $newGoodDiv;
-let $newSlowDiv;
-let $boardCreate;
-let $newBonusDiv;
-let compSelection;
-let score     = 0;
-let hScore    = 0;
-let falling   = [];
-let running   = true;
-let interval  = 3000;
+const game = {};
 
-function init (){
-  createBoard();
-  $('#start').on('click', startGame);
-  $('.board').on('click', '.falling', removeFalling);
-  $('.board').on('click', '.dontClick', clickPoison);
-  $('.board').on('click', '.bonus', removeBonus);
-  $('.board').on('click', '.slow', removeSlow);
-  $('#reset').on('click', resetGame);
-  $('#gg').hide();
-}
-function createBoard() {
-  $main         = $('main');
-  $boardCreate  = $('<div>', { class: 'board'});
-  $main.append($boardCreate);
+game.init = function init (){
+  this.createBoard();
+  this.$slow;
+  this.$bonus;
+  this.$falling;
+  this.$dontClick;
+  this.score      = 0;
+  this.hScore     = 0;
+  this.falling    = [];
+  this.running    = true;
+  this.interval   = 3000;
+  this.$start     = $('#start');
+  this.$reset     = $('#reset');
+  this.$gg        = $('#gg');
+  this.$score     = $('#score');
+  this.$hScore    = $('#hScore');
+  this.$board     = $('.board');
+  this.$start.on('click', this.startGame.bind(this));
+  this.$board.on('click', '.falling', this.removeFalling.bind(this));
+  this.$board.on('click', '.dontClick', this.clickPoison.bind(this));
+  this.$board.on('click', '.bonus', this.removeBonus.bind(this));
+  this.$board.on('click', '.slow', this.removeSlow.bind(this));
+  this.$reset.on('click', this.resetGame.bind(this));
+  this.$gg.hide();
+};
+game.createBoard =function createBoard() {
+  this.$main         = $('main');
+  this.$boardCreate  = $('<div>', { class: 'board'});
+  this.$main.append(this.$boardCreate);
   for (let i = 0; i < 4; i++) {
-    $boardCreate.append('<div class="col"></div>');
-    highScore();
+    this.$boardCreate.append('<div class="col"></div>');
+    this.highScore();
   }
-}
-function startGame(){
-  if (running === true)  {
-    gameTimeout = setTimeout(createFallingDiv, interval/4.7);
-    running     = false;
+};
+game.startGame =function startGame(){
+  if (this.running === true)  {
+    this.gameTimeout = setTimeout(this.createFallingDiv.bind(this), this.interval/4.7);
+    this.running     = false;
   }
-}
-function createFallingDiv (){
-  $newGoodDiv       = $('<div>', { class: 'falling'});
-  $newBonusDiv      = $('<div>', { class: 'bonus'});
-  $newSlowDiv       = $('<div>', { class: 'slow'});
-  $newBadDiv        = $('<div>', { class: 'dontClick'});
-  gameTimeout       = setTimeout(createFallingDiv, interval/4.4);
-  compSelection     = $('.col')[Math.floor(Math.random()*$('.col').length)];
+};
+game.createFallingDiv =function createFallingDiv (){
+  this.$newGoodDiv       = $('<div>', { class: 'falling'});
+  this.$newBonusDiv      = $('<div>', { class: 'bonus'});
+  this.$newSlowDiv       = $('<div>', { class: 'slow'});
+  this.$newBadDiv        = $('<div>', { class: 'dontClick'});
+  this.gameTimeout       = setTimeout(this.createFallingDiv.bind(this), game.interval/4.4);
+  this.compSelection     = $('.col')[Math.floor(Math.random()*$('.col').length)];
   const typeOfDiv   = Math.floor(Math.random() * 100);
-  // if (typeOfDiv >= 10) {
-  if (typeOfDiv >= 75) {
-    compAnimate($newGoodDiv);
-    falling.push($newGoodDiv[0]);
-  // } else if (typeOfDiv >= 9 && typeOfDiv < 10 ) {
-  } else if (typeOfDiv >= 50 && typeOfDiv < 75 ) {
-    compAnimate($newBonusDiv);
-  // } else if (typeOfDiv >= 8 && typeOfDiv < 9 ) {
-  } else if (typeOfDiv >= 25 && typeOfDiv < 50 ) {
-    compAnimate($newSlowDiv);
+  if (typeOfDiv >= 10) {
+  // if (typeOfDiv >= 75) {
+    this.compAnimate(this.$newGoodDiv);
+    this.falling.push(this.$newGoodDiv[0]);
+  } else if (typeOfDiv >= 9 && typeOfDiv < 10 ) {
+  // } else if (typeOfDiv >= 50 && typeOfDiv < 75 ) {
+    this.compAnimate(this.$newBonusDiv);
+  } else if (typeOfDiv >= 8 && typeOfDiv < 9 ) {
+  // } else if (typeOfDiv >= 25 && typeOfDiv < 50 ) {
+    this.compAnimate(this.$newSlowDiv);
   } else {
-    $(compSelection).append($newBadDiv);
-    $newBadDiv.animate({
+    $(this.compSelection).append(this.$newBadDiv);
+    this.$newBadDiv.animate({
       bottom: 0},
-      { duration: interval,
+      { duration: this.interval,
         easing: 'linear',
         complete: function() {
           $(this).remove();
         }
       });
   }
-}
-function compAnimate(div) {
-  $(compSelection).append(div);
+};
+game.compAnimate = function compAnimate(div) {
+  $(this.compSelection).append(div);
   div.animate({
     bottom: 0},
-    { duration: interval,
+    { duration: this.interval,
       easing: 'linear',
-      complete: gameOver
+      complete: this.gameOver.bind(this)
     });
-}
-function removeFalling() {
-  if (falling.indexOf(this) === 0) {
-    falling.shift();
-    removeDiv.call(this, -40, 1);
+};
+game.removeFalling = function removeFalling(e) {
+  if (this.falling.indexOf(e.target) === 0) {
+    this.falling.shift();
+    this.removeDiv.call(e.target, -40, 1);
+    this.beer = new Audio('sounds/beer.mp3');
+    this.beer.play();
   }
-  beer = new Audio('sounds/beer.mp3');
-  beer.play();
-}
-function removeBonus() {
-  removeDiv.call(this, -40, 5);
-  vodka = new Audio('sounds/vodka.mp3');
-  vodka.play();
-}
-function removeSlow() {
-  removeDiv.call(this, 160, 1);
-  water = new Audio('sounds/water.wav');
-  water.play();
-}
-function removeDiv(time, points) {
-  interval  = interval + time;
-  score     = score + points;
+};
+game.removeBonus = function removeBonus(e) {
+  this.removeDiv.call(e.target, -40, 5);
+  this.vodka = new Audio('sounds/vodka.mp3');
+  this.vodka.play();
+};
+game.removeSlow = function removeSlow(e) {
+  this.removeDiv.call(e.target, 160, 1);
+  this.water = new Audio('sounds/water.wav');
+  this.water.play();
+};
+game.removeDiv =function removeDiv(time, points) {
+  game.interval  = game.interval + time;
+  game.score     = game.score + points;
   $(this).stop(true).fadeOut( 'fast', () => $(this).remove());
-  $('#score').text(`Score: ${score}`);
-  highScore();
-}
-function clickPoison() {
-  gameOver();
-  poison = new Audio('sounds/poison.mp3');
-  poison.play();
-}
-function gameOver() {
-  $('.falling').stop(true).remove();
-  $('.dontClick').stop(true).remove();
-  $('.bonus').stop(true).remove();
-  $('.slow').stop(true).remove();
-  clearTimeout(gameTimeout);
-  $('#start').hide();
-  $('#reset').show();
-  $('#gg').show();
-  fallen = new Audio('sounds/fallen.mp3');
-  fallen.play();
-}
-function resetGame() {
-  falling   = [];
-  score     = 0;
-  running   = true;
-  interval  = 3000;
-  clearTimeout(gameTimeout);
-  $('#reset').hide();
-  $('#start').show();
-  $('#gg').hide();
-  $('#score').text(`Score: ${score}`);
-}
-function highScore() {
-  if (score > hScore) {
-    hScore = score;
-    $('#hScore').text(`High Score: ${hScore}`);
+  game.$score.text(`Score: ${game.score}`);
+  game.highScore();
+};
+game.clickPoison =function clickPoison() {
+  this.gameOver();
+  this.poison = new Audio('sounds/poison.mp3');
+  this.poison.play();
+};
+game.gameOver =function gameOver() {
+  this.$slow      = $('.slow');
+  this.$bonus     = $('.bonus');
+  this.$dontClick = $('.dontClick');
+  this.$falling   = $('.falling');
+  this.$falling.stop().remove();
+  this.$dontClick.stop().remove();
+  this.$bonus.stop().remove();
+  this.$slow.stop().remove();
+  clearTimeout(this.gameTimeout);
+  this.$start.hide();
+  this.$reset.show();
+  this.$gg.show();
+  this.fallen = new Audio('sounds/fallen.mp3');
+  this.fallen.play();
+};
+game.resetGame =function resetGame() {
+  this.falling   = [];
+  this.score     = 0;
+  this.running   = true;
+  this.interval  = 3000;
+  clearTimeout(this.gameTimeout);
+  this.$reset.hide();
+  this.$start.show();
+  this.$gg.hide();
+  this.$score.text(`Score: ${this.score}`);
+};
+game.highScore =function highScore() {
+  if (this.score > this.hScore) {
+    this.hScore = this.score;
+    this.$hScore.text(`High Score: ${this.hScore}`);
   }
-}
+};
+
+$(game.init.bind(game));
