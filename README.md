@@ -30,7 +30,7 @@ The image above represents a bottle of poison. This is the second most common ob
 ##How it was made
 ***Don't let your drink fall*** was built using **Javascript**, **HTML**, and **CSS**. It also used:
 
-- [jQuery library] (http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js)
+- [jQuery library] (https://code.jquery.com/jquery-3.2.1.js)
 - [Fonts] (https://fonts.google.com/)
 
 ##Credits
