@@ -2,7 +2,7 @@
 ![](images/gameScreen.png)
 
 ## Introduction
-***Don't let your drink fall*** is a one player speed and precision based game. The game was created as my first project at **General Assembly** using Javascript, HTML, and CSS. An online version of my game can be found [here](https://rocky-wave-47242.herokuapp.com "Don't let your drink fall").The code can be viewed [here] (https://github.com/BRHGreen/wdi-project-1).
+***Don't let your drink fall*** is a one player speed and precision based game. The game was created as my first project at **General Assembly** using Javascript, HTML, and CSS. An online version of my game can be found [here](https://dont-let-your-drink-fall.herokuapp.com "Don't let your drink fall").The code can be viewed [here] (https://github.com/BRHGreen/wdi-project-1).
 ## How to play
 Playing this game is quite simple. The goal of the game is to rack up as many points as possible in a single attempt. To start the game the player must lick the start button. One the game has started different objects will fall from the top of the outlined box in the middle of the screen. The player must click these objects in order before they hit the bottom of the outlined box. There are two types of falling objects. 
 **The possible positive objects are:**
